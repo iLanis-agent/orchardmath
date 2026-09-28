@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrchardMath - Backyard Orchard Math That Holds Up</title>
+<meta name="description" content="Tree spacing and counts by rootstock, chill-hour fit for your winters, honest years-to-bearing, real yield per mature tree, and pollination distance truth.">
+<link rel="canonical" href="https://ilanis-agent.github.io/orchardmath/">
+<meta property="og:title" content="OrchardMath - Backyard Orchard Math That Holds Up">
+<meta property="og:description" content="Tree spacing and counts by rootstock, chill-hour fit for your winters, honest years-to-bearing, real yield per mature tree, and pollination distance truth.">
+<meta property="og:url" content="https://ilanis-agent.github.io/orchardmath/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#3d1d12">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%8D%8E%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#1c120c; --card:#2a1a10; --ink:#f7ece0; --muted:#cba88e;
+  --accent:#e07a4a; --accent2:#f2c14e; --line:#4d2f1e; --good:#8fd18a; --warn:#f2c14e; --bad:#e86a5a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:1rem}
+.wrap{max-width:760px;margin:0 auto}
+header{text-align:center;padding:1.6rem 0 1.2rem}
+h1{font-size:2.1rem;color:var(--accent2);letter-spacing:.5px}
+.tag{color:var(--muted);margin-top:.3rem;font-size:.98rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.2rem;margin:1rem 0}
+.card h2{font-size:1.05rem;color:var(--accent);margin-bottom:.7rem}
+.row{display:flex;flex-wrap:wrap;gap:.9rem;align-items:flex-end;margin:.5rem 0}
+.field{display:flex;flex-direction:column;gap:.25rem}
+label{font-size:.8rem;color:var(--muted)}
+input,select{background:#140d08;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:.45rem .6rem;font-size:1rem;width:9.5rem}
+input:focus,select:focus{outline:2px solid var(--accent)}
+button{background:var(--accent);color:#1c120c;border:0;border-radius:8px;padding:.5rem 1.1rem;font-size:.95rem;font-weight:700;cursor:pointer}
+button:hover{background:#ec9168}
+.presets{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 .2rem}
+.presets button{background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:400;padding:.35rem .8rem;font-size:.85rem}
+.presets button:hover{border-color:var(--accent);color:var(--ink)}
+.big{font-size:1.3rem;font-weight:700;color:var(--accent2)}
+.result{margin-top:.6rem;font-size:1rem;min-height:1.4rem}
+.result small{color:var(--muted);display:block;margin-top:.25rem}
+.verdict-ok{color:var(--good)} .verdict-tight{color:var(--warn)} .verdict-bad{color:var(--bad)}
+.era{font-size:.85rem;color:var(--muted);margin-bottom:.6rem;font-style:italic}
+footer{margin:2rem 0 1rem;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:1rem}
+footer code{color:var(--accent)}
+details{margin-top:.4rem} summary{cursor:pointer;color:var(--muted);font-size:.85rem}
+table{border-collapse:collapse;margin-top:.5rem;font-size:.9rem}
+td,th{border:1px solid var(--line);padding:.3rem .6rem;text-align:left}
+th{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>&#127822; OrchardMath</h1>
+<p class="tag">Backyard orchard math that holds up. Spacing, chill hours, bearing age, yield - planned for the tree it becomes, not the stick you planted.</p>
+</header>
+
+<section class="card" id="c-space">
+<h2>Spacing &amp; tree count</h2>
+<p class="era">The nursery sells you a stick; the rootstock decides the tree it becomes. Spacing is set by the mature canopy, not the planting day.</p>
+<div class="presets" id="presets-space"></div>
+<div class="row">
+  <div class="field"><label for="in-stock">rootstock</label>
+    <select id="in-stock">
+      <option value="dwarf" selected>dwarf - 9 ft spacing</option>
+      <option value="semidwarf">semi-dwarf - 13 ft spacing</option>
+      <option value="standard">standard - 20 ft spacing</option>
+    </select>
+  </div>
+  <div class="field"><label for="in-row">row length (ft)</label><input id="in-row" type="number" min="10" max="1000" step="5" value="100"></div>
+  <div class="field"><label for="in-acre">area (acres)</label><input id="in-acre" type="number" min="0.05" max="40" step="0.05" value="0.25"></div>
+</div>
+<button id="btn-space">Spacing math</button>
+<div class="result" id="out-space"></div>
+</section>
+
+<section class="card" id="c-chill">
+<h2>Chill hours</h2>
+<p class="era">Fruit trees count the cold hours under 45 F and refuse to crop without them. Your winter either covers the variety or it doesn't.</p>
+<div class="row">
+  <div class="field"><label for="in-clim">your winters (chill hrs)</label><input id="in-clim" type="number" min="0" max="2500" step="50" value="800"></div>
+  <div class="field"><label for="in-var">variety needs</label>
+    <select id="in-var">
+      <option value="250">250 hrs - fig, low-chill peach</option>
+      <option value="500">500 hrs - low-chill apple, plum</option>
+      <option value="700" selected>700 hrs - typical peach, pear</option>
+      <option value="900">900 hrs - typical apple</option>
+      <option value="1200">1200 hrs - high-chill cherry, apple</option>
+    </select>
+  </div>
+</div>
+<button id="btn-chill">Chill math</button>
+<div class="result" id="out-chill"></div>
+</section>
+
+<section class="card" id="c-yield">
+<h2>Bearing age &amp; yield</h2>
+<p class="era">Catalogs photograph the tenth year and price the first. Bearing age is a rootstock fact, and yield compounds with patience.</p>
+<div class="row">
+  <div class="field"><label for="in-ystock">rootstock</label>
+    <select id="in-ystock">
+      <option value="dwarf" selected>dwarf</option>
+      <option value="semidwarf">semi-dwarf</option>
+      <option value="standard">standard</option>
+    </select>
+  </div>
+  <div class="field"><label for="in-trees">mature trees</label><input id="in-trees" type="number" min="1" max="500" step="1" value="8"></div>
+  <div class="field"><label for="in-crop">crop</label>
+    <select id="in-crop">
+      <option value="apple" selected>apple (42 lb/bu)</option>
+      <option value="peach">peach (48 lb/bu)</option>
+      <option value="pear">pear (50 lb/bu)</option>
+      <option value="plum">plum (50 lb/bu)</option>
+    </select>
+  </div>
+</div>
+<button id="btn-yield">Yield math</button>
+<div class="result" id="out-yield"></div>
+</section>
+
+<section class="card" id="c-pollin">
+<h2>Pollination</h2>
+<p class="era">Most apples and pears need a partner variety in bloom at the same time, close enough for a bee's commute.</p>
+<div class="row">
+  <div class="field"><label for="in-self">variety</label>
+    <select id="in-self">
+      <option value="no" selected>needs a partner (most apples, pears)</option>
+      <option value="yes">self-fertile (peach, fig, sour cherry)</option>
+    </select>
+  </div>
+  <div class="field"><label for="in-dist">nearest partner (ft)</label><input id="in-dist" type="number" min="0" max="1000" step="10" value="50"></div>
+</div>
+<button id="btn-pollin">Pollination math</button>
+<div class="result" id="out-pollin"></div>
+</section>
+
+<section class="card" id="c-why">
+<h2>Why these numbers</h2>
+<details><summary>The assumptions, stated honestly</summary>
+<table>
+<tr><th>Constant</th><th>Value</th><th>Why</th></tr>
+<tr><td>Spacing</td><td>dwarf 9, semi 13, standard 20 ft</td><td>Mature canopy diameter by rootstock class - the rootstock decides, not the tag photo</td></tr>
+<tr><td>Bearing age</td><td>dwarf 2-3, semi 3-5, standard 6-10 yr</td><td>Published rootstock behavior; nursery tags habitually quote the best case</td></tr>
+<tr><td>Yield per mature tree</td><td>dwarf 0.75, semi 3, standard 7.5 bu</td><td>Extension-service averages for a tended tree, not a record year</td></tr>
+<tr><td>Bushel weights</td><td>apple 42, peach 48, pear/plum 50 lb</td><td>USDA standard bushel weights</td></tr>
+<tr><td>Chill hours</td><td>250-1200 by variety</td><td>Hours under 45 F the buds demand before they will break evenly</td></tr>
+<tr><td>Pollination distance</td><td>within ~100 ft</td><td>A honeybee's practical commute for reliable cross-pollination</td></tr>
+</table>
+<p style="margin-top:.5rem;color:var(--muted);font-size:.85rem">Soil, pruning and late frosts move every number here. The trees grade the plan in about five years.</p>
+</details>
+</section>
+
+<footer>
+<p><strong>OrchardMath</strong> - part of the App Factory collection. Honest small tools, one good idea at a time.</p>
+<p>Source: <code>engine.js</code> (pure functions, tested) &middot; <code>app.html</code> (this UI) &middot; <code>README.md</code></p>
+</footer>
+</div>
+</body>
+</html>
